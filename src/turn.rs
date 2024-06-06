@@ -1,5 +1,6 @@
 use core::{str::FromStr, fmt::{Debug, Display, Formatter, Result as FmtResult}};
 use alloc::{vec::Vec, vec};
+use regex::Regex;
 
 use super::{Tile, Board, Bank, CastlingSide, PieceType};
 // pub struct Turn {
@@ -182,7 +183,11 @@ impl FromStr for Move {
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         let mut moves = Vec::new();
         let words = s.split_whitespace();
+        let re = Regex::new(r"(\$[NKQPB]([a-h][1-8])|[NKQPB]?([a-h][1-8])([a-h][1-8])?|resign|pass|O-O(-O)?)").unwrap();
         for word in words {
+            if !(re.is_match(word)){
+                return Err(());
+            };
             if word == "O-O" || word == "O-O-O" {
                 return Ok(Move::Castling(word.parse().unwrap()));
             }
