@@ -271,6 +271,8 @@ impl Board {
                 return Err(());
             }
         }
+        // TODO there is something wrong here that means this is triggered when white rook in H is
+        // taken. Actually there is something wrong with castling rights in general
         if self.white_rooks & Tile::new(Rank::BACK_RANK_WHITE, File::A).to_bit() == 0 {
             if self.castling_rights.can_castle(Tile::king_start_position(Color::White), Tile::new(Rank::BACK_RANK_WHITE, File::A)) {
                 error!("White rook is off square, but still has castling rights");
