@@ -201,9 +201,14 @@ impl FromStr for Move {
             }
 
             if word.starts_with("$") {
-                let piece = PieceType::from_str(&word[1..2]).unwrap();
-                let to = Tile::from_str(&word[2..4]).unwrap();
+                if word.len() == 3 {
+                    let piece = PieceType::Pawn;
+                    let to = Tile::from_str(&word[1..3]).unwrap();
+                } else {
+                    let piece = PieceType::from_str(&word[1..2]).unwrap();
+                    let to = Tile::from_str(&word[2..4]).unwrap();
                 moves.push(Move::Purchase {piece, to});
+                }
                 continue;
             }
 
